@@ -49,6 +49,8 @@ def main():
     scene  = Scene()
     
     scene.add_tile(0, 0, 0, "Grass")
+    scene.add_tile(1, 0, 0, "Grass")
+    scene.add_tile(2, 0, 0, "Grass")
 
     # Timing
     current_time = glfw.get_time()
@@ -58,7 +60,6 @@ def main():
     frames = 0
     
     render_program.use()
-    glUniform1f(glGetUniformLocation(render_program.ID, "scale"), SCREEN_SCALE)
 
     # Main Loop
     while not glfw.window_should_close(window):
@@ -77,7 +78,7 @@ def main():
 
             camera.update(window, dt)
             
-            scene.update(dt)
+            scene.update(camera, dt)
             scene.draw(camera, render_program)
 
             glfw.swap_buffers(window)

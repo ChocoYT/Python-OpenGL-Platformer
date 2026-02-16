@@ -5,6 +5,8 @@ from camera   import Camera2D
 from mesh     import Mesh
 from program  import Program
 
+from settings import *
+
 class Scene:
     def __init__(self):
         from loader import assets
@@ -28,10 +30,10 @@ class Scene:
     def add_tile(self, x: int, y: int, z: int, name: str) -> None:
         self.tiles[(x, y, z)] = name
     
-    def update(self, dt: float) -> None:
-        self._create_geometry()
+    def update(self, camera: Camera2D, dt: float) -> None:
+        self._create_geometry(camera)
     
-    def _create_geometry(self) -> None:
+    def _create_geometry(self, camera: Camera2D) -> None:
         vertices = []
         indices = []
         idx_offset = 0
@@ -39,12 +41,16 @@ class Scene:
         textures  = self.assets["textures"]
         tile_meta = self.assets["meta"]["tiles"]
         tile_size = self.assets["meta"]["tile_size"]
+        
+        #for x in range(camera.position.x // )
 
-        for (x_world, y_world, z_world), name in self.tiles.items():
+        for world_pos, name in self.tiles.items():
             if name not in tile_meta:
                 print(f"Warning: Tile {name} not in metadata")
                 continue
-
+            
+            x_world, y_world, z_world = world_pos
+            
             tx, ty, layer = tile_meta[name]
 
             sheet_width  = textures.width
@@ -83,10 +89,13 @@ class Scene:
 
     def draw(self, camera: Camera2D, program: Program) -> None:
         program.use()
+        
         glUniformMatrix4fv(glGetUniformLocation(program.ID, "projMatrix"), 1, GL_FALSE, glm.value_ptr(camera.get_proj()))
         glUniformMatrix4fv(glGetUniformLocation(program.ID, "viewMatrix"), 1, GL_FALSE, glm.value_ptr(camera.get_view()))
         
-        self.assets["textures"].bind(slot=0)  
+        glUniform1f(glGetUniformLocation(program.ID, "scale"), SCREEN_SCALE)
+        
+        self.assets["textures"].bind(slot=0)
         glUniform1i(glGetUniformLocation(program.ID, "texArray"), 0)
         
         self.mesh.draw()

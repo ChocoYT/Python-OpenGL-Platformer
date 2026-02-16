@@ -1,0 +1,33 @@
+# Text Files
+* text=auto eol=lf
+
+# Python Files
+*.py  text eol=lf
+*.pyi text eol=lf
+
+# Shader Files
+*.glsl text eol=lf
+*.vert text eol=lf
+*.frag text eol=lf
+*.comp text eol=lf
+
+# UV Files
+uv.lock         text eol=lf
+pyproject.toml  text eol=lf
+.python-version text eol=lf
+
+# Data and README Files
+*.json text eol=lf
+*.toml text eol=lf
+*.yaml text eol=lf
+*.yml  text eol=lf
+*.md   text eol=lf
+
+# Binary Files
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.pyc  binary
+*.whl  binary
